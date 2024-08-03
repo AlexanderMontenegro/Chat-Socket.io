@@ -1,0 +1,14 @@
+#container-wrap{
+    display: none;
+}
+
+
+.msg{
+padding-top: 10px;
+padding-left: 10px;
+
+}
+
+.msg b{
+    padding-top: 10px;
+}
