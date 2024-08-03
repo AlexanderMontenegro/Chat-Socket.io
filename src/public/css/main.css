@@ -1,3 +1,9 @@
+
+
+
+body{
+    background-color: blue;
+}
 #container-wrap{
     display: none;
 }
@@ -10,5 +16,12 @@ padding-left: 10px;
 }
 
 .msg b{
-    padding-top: 10px;
+padding-top: 10px;
+padding-left: 10px;
+}
+
+.d-flex{
+    display: flex !important;
+    flex-direction: row;
+    align-items: baseline;
 }
