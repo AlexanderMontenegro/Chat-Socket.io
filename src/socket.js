@@ -5,8 +5,9 @@ module.exports = (io) =>{
 
 
     io.on('connection', socket => {
-        console.log('nuevo usuario conectado');
-
+        console.log('nuevo usuario conectado ' + socket.id);
+        console.log("cantidad de usuarios conectados "+ io.engine.clientsCount);
+        
 
          //caprturamos mensaje y usuario
 
@@ -36,12 +37,12 @@ module.exports = (io) =>{
 
 
         socket.on("disconnect", (datos)=>{
+            console.log("el usuario " + socket.id + " se ha desconectado.");
+            
             if(!socket.nickname){ return;
             }else{
                 nickNames.splice(nickNames.indexOf(socket.nickname), 1);
                 io.sockets.emit("nuevo usuario", nickNames);
-
- 
             }
    
         })

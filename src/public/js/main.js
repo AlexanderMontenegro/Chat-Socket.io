@@ -19,6 +19,19 @@ $(function () {
     socket.emit("enviar mensaje", messageBox.val());
     messageBox.val("");
   });
+//conexion de usuario
+socket.on("connect",()=>{
+  console.log("Usuario conectado: ", socket.id);
+})
+
+
+//desconesion de usuario
+socket.on("disconnect",()=>{
+  console.log("Usuario desconectado: ", socket.id);
+  
+})
+
+
 
   //respuesta de servidor
 
