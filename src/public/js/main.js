@@ -1,3 +1,5 @@
+//Cliente
+
 $(function () {
   const socket = io();
   var nick = "";
@@ -19,19 +21,19 @@ $(function () {
     socket.emit("enviar mensaje", messageBox.val());
     messageBox.val("");
   });
-//conexion de usuario
-socket.on("connect",()=>{
-  console.log("Usuario conectado: ", socket.id);
-})
+  //conexion de usuario
+  socket.on("connect", () => {
+    console.log("Usuario conectado: ", socket.id);
+  });
+
+  //desconesion de usuario
+  socket.on("disconnect", () => {
+    console.log("Usuario desconectado: ", socket.id);
+  });
 
 
-//desconesion de usuario
-socket.on("disconnect",()=>{
-  console.log("Usuario desconectado: ", socket.id);
-  
-})
 
-
+  socket.emit("Bienvenidos","Bienvenido" )
 
   //respuesta de servidor
 
@@ -40,9 +42,8 @@ socket.on("disconnect",()=>{
 
     let color = "#f4f4f4";
 
-    if(nick == datos.username){
-        color = "#9ff4c5";
-
+    if (nick == datos.username) {
+      color = "#9ff4c5";
     }
 
     chat.append(
@@ -52,10 +53,10 @@ socket.on("disconnect",()=>{
 
   //nuevo usuario
 
-  nickForm.submit(e => {
+  nickForm.submit((e) => {
     e.preventDefault();
 
-    socket.emit("nuevo usuario", nickName.val(), datos => {
+    socket.emit("nuevo usuario", nickName.val(), (datos) => {
       if (datos) {
         nick = nickName.val();
         $("#nick-wrap").hide();
@@ -69,29 +70,24 @@ socket.on("disconnect",()=>{
     });
   });
 
-
   //obtenemos usuarios conectados
 
-  socket.on("nuevo usuario", datos => {
+  socket.on("nuevo usuario", (datos) => {
     let html = "";
     let color = "";
     let salir = "";
 
-    for(let i = 0; i < datos.length; i++){
-        if(nick == datos[i]){
-            color = "#047f43"
-            salir = `<a class="enlace-salir" href="/">Salir</a>`;
-        }else{
-            color = "#333"
-            salir = "";
-        }
-        html += `<p style="color: ${color}">${datos[i]} ${salir}</p>`;
+    for (let i = 0; i < datos.length; i++) {
+      if (nick == datos[i]) {
+        color = "#047f43";
+        salir = `<a class="enlace-salir" href="/">Salir</a>`;
+      } else {
+        color = "#333";
+        salir = "";
+      }
+      html += `<p style="color: ${color}">${datos[i]} ${salir}</p>`;
     }
 
     userNames.html(html);
-  })
-
-
-
-
+  });
 });
