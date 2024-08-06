@@ -1,5 +1,3 @@
-//Cliente
-
 $(function () {
   const socket = io();
   var nick = "";
@@ -14,34 +12,33 @@ $(function () {
   const nickName = $("#nick-name");
 
   const userNames = $("#usernames");
-  //ewventos
-  //mesnaje al servidor
+  const userCount = $("#user-count");
+
+  //eventos
+  //mensaje al servidor
   messageForm.submit((e) => {
     e.preventDefault();
     socket.emit("enviar mensaje", messageBox.val());
     messageBox.val("");
   });
+
   //conexion de usuario
   socket.on("connect", () => {
     console.log("Usuario conectado: ", socket.id);
-    console.log("cantidad de usuarios conectados " + io.engine.clientsCount);
-
   });
 
-  //desconesion de usuario
+  //desconexion de usuario
   socket.on("disconnect", () => {
     console.log("Usuario desconectado: ", socket.id);
   });
 
+  //actualizar contador de usuarios
+  socket.on("user count", (count) => {
+    userCount.text(count);
+  });
 
-
-
-
-  //respuesta de servidor
-
+  //respuesta del servidor
   socket.on("nuevo mensaje", function (datos) {
-    // console.log(datos);
-
     let color = "#f4f4f4";
 
     if (nick == datos.username) {
@@ -49,12 +46,11 @@ $(function () {
     }
 
     chat.append(
-      `<div class="msg-area mb=2 d-flex" style="background-color:${color}" ><b>${datos.username}:</b><p class="msg">${datos.msg}</p></div>`
+      `<div class="msg-area mb-2 d-flex" style="background-color:${color}" ><b>${datos.username}:</b><p class="msg">${datos.msg}</p></div>`
     );
   });
 
   //nuevo usuario
-
   nickForm.submit((e) => {
     e.preventDefault();
 
@@ -65,15 +61,14 @@ $(function () {
         $("#container-wrap").show();
       } else {
         nickError.html(
-          '<div clas="alert-danger" >El nombre de usuario ya está en uso</div>'
+          '<div class="alert-danger">El nombre de usuario ya está en uso</div>'
         );
       }
       nickName.val("");
     });
   });
 
-  //obtenemos usuarios conectados
-
+  //obtener usuarios conectados
   socket.on("nuevo usuario", (datos) => {
     let html = "";
     let color = "";
