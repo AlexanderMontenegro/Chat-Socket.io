@@ -24,6 +24,8 @@ $(function () {
   //conexion de usuario
   socket.on("connect", () => {
     console.log("Usuario conectado: ", socket.id);
+    console.log("cantidad de usuarios conectados " + io.engine.clientsCount);
+
   });
 
   //desconesion de usuario
@@ -33,7 +35,7 @@ $(function () {
 
 
 
-  socket.emit("Bienvenidos","Bienvenido" )
+
 
   //respuesta de servidor
 
