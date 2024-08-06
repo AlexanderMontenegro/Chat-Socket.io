@@ -2,6 +2,7 @@
 
 body{
     margin: 0;
+    margin-bottom: 20px;
     min-height: 100vh;
  
     justify-content: center;

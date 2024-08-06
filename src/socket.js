@@ -28,17 +28,21 @@ module.exports = (io) => {
       }
     });
 
-    socket.on("crear sala", (roomName, isPrivate, callback) => {
+    socket.on("crear sala", (roomName, isPrivate, password, callback) => {
       if (rooms[roomName]) {
         callback({ success: false, message: "Sala ya existe" });
       } else {
-        rooms[roomName] = { private: isPrivate, members: [] };
+        rooms[roomName] = { private: isPrivate, members: [], password: isPrivate ? password : null };
         callback({ success: true, message: "Sala creada" });
       }
     });
 
-    socket.on("unirse sala", (roomName, callback) => {
+    socket.on("unirse sala", (roomName, password, callback) => {
       if (rooms[roomName]) {
+        if (rooms[roomName].private && rooms[roomName].password !== password) {
+          callback({ success: false, message: "Contraseña incorrecta" });
+          return;
+        }
         socket.join(roomName);
         rooms[roomName].members.push(socket.id);
         socket.room = roomName;
