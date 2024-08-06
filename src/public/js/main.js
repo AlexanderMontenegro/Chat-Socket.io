@@ -1,12 +1,12 @@
 $(function () {
   const socket = io();
   let nick = "";
-  
+
   // Elementos DOM
   const messageForm = $("#messages-form");
   const messageBox = $("#message");
   const chat = $("#chat");
-  
+
   const nickForm = $("#nick-form");
   const nickError = $("#nick-error");
   const nickName = $("#nick-name");
@@ -14,10 +14,12 @@ $(function () {
   const roomForm = $("#create-room-form");
   const roomName = $("#room-name");
   const roomType = $("#room-type");
+  const roomPassword = $("#room-password");
   const roomError = $("#room-error");
 
   const joinRoomForm = $("#join-room-form");
   const joinRoomName = $("#join-room-name");
+  const joinRoomPassword = $("#join-room-password");
 
   const leaveRoomBtn = $("#leave-room-btn");
   const userNames = $("#usernames");
@@ -48,20 +50,23 @@ $(function () {
   roomForm.submit((e) => {
     e.preventDefault();
     const isPrivate = roomType.val() === "private";
-    socket.emit("crear sala", roomName.val(), isPrivate, (response) => {
+    const password = isPrivate ? roomPassword.val() : null;
+    socket.emit("crear sala", roomName.val(), isPrivate, password, (response) => {
       if (response.success) {
         alert(response.message);
       } else {
         roomError.html(`<div class="alert-danger">${response.message}</div>`);
       }
       roomName.val("");
+      roomPassword.val("");
     });
   });
 
   // Unirse a sala
   joinRoomForm.submit((e) => {
     e.preventDefault();
-    socket.emit("unirse sala", joinRoomName.val(), (response) => {
+    const password = joinRoomPassword.val() || null;
+    socket.emit("unirse sala", joinRoomName.val(), password, (response) => {
       if (response.success) {
         $("#container-wrap").show();
         $("#room-wrap").hide();
@@ -69,6 +74,7 @@ $(function () {
         roomError.html(`<div class="alert-danger">${response.message}</div>`);
       }
       joinRoomName.val("");
+      joinRoomPassword.val("");
     });
   });
 
@@ -91,6 +97,6 @@ $(function () {
 
   // Contador de usuarios
   socket.on("user count", (count) => {
-    $("#user-count").text(count);
+    $("#user-count").text(`Usuarios en línea: ${count}`);
   });
 });
