@@ -1,90 +1,96 @@
 $(function () {
   const socket = io();
-  var nick = "";
-
-  //elementos dom
+  let nick = "";
+  
+  // Elementos DOM
   const messageForm = $("#messages-form");
   const messageBox = $("#message");
   const chat = $("#chat");
-
+  
   const nickForm = $("#nick-form");
   const nickError = $("#nick-error");
   const nickName = $("#nick-name");
 
-  const userNames = $("#usernames");
-  const userCount = $("#user-count");
+  const roomForm = $("#create-room-form");
+  const roomName = $("#room-name");
+  const roomType = $("#room-type");
+  const roomError = $("#room-error");
 
-  //eventos
-  //mensaje al servidor
+  const joinRoomForm = $("#join-room-form");
+  const joinRoomName = $("#join-room-name");
+
+  const leaveRoomBtn = $("#leave-room-btn");
+  const userNames = $("#usernames");
+
+  // Enviar mensaje
   messageForm.submit((e) => {
     e.preventDefault();
     socket.emit("enviar mensaje", messageBox.val());
     messageBox.val("");
   });
 
-  //conexion de usuario
-  socket.on("connect", () => {
-    console.log("Usuario conectado: ", socket.id);
-  });
-
-  //desconexion de usuario
-  socket.on("disconnect", () => {
-    console.log("Usuario desconectado: ", socket.id);
-  });
-
-  //actualizar contador de usuarios
-  socket.on("user count", (count) => {
-    userCount.text(count);
-  });
-
-  //respuesta del servidor
-  socket.on("nuevo mensaje", function (datos) {
-    let color = "#f4f4f4";
-
-    if (nick == datos.username) {
-      color = "#9ff4c5";
-    }
-
-    chat.append(
-      `<div class="msg-area mb-2 d-flex" style="background-color:${color}" ><b>${datos.username}:</b><p class="msg">${datos.msg}</p></div>`
-    );
-  });
-
-  //nuevo usuario
+  // Registro de usuario
   nickForm.submit((e) => {
     e.preventDefault();
-
-    socket.emit("nuevo usuario", nickName.val(), (datos) => {
-      if (datos) {
+    socket.emit("nuevo usuario", nickName.val(), (response) => {
+      if (response) {
         nick = nickName.val();
         $("#nick-wrap").hide();
-        $("#container-wrap").show();
+        $("#room-wrap").show();
       } else {
-        nickError.html(
-          '<div class="alert-danger">El nombre de usuario ya está en uso</div>'
-        );
+        nickError.html(`<div class="alert-danger">Nombre de usuario ya en uso</div>`);
       }
       nickName.val("");
     });
   });
 
-  //obtener usuarios conectados
-  socket.on("nuevo usuario", (datos) => {
-    let html = "";
-    let color = "";
-    let salir = "";
-
-    for (let i = 0; i < datos.length; i++) {
-      if (nick == datos[i]) {
-        color = "#047f43";
-        salir = `<a class="enlace-salir" href="/">Salir</a>`;
+  // Crear sala
+  roomForm.submit((e) => {
+    e.preventDefault();
+    const isPrivate = roomType.val() === "private";
+    socket.emit("crear sala", roomName.val(), isPrivate, (response) => {
+      if (response.success) {
+        alert(response.message);
       } else {
-        color = "#333";
-        salir = "";
+        roomError.html(`<div class="alert-danger">${response.message}</div>`);
       }
-      html += `<p style="color: ${color}">${datos[i]} ${salir}</p>`;
-    }
+      roomName.val("");
+    });
+  });
 
-    userNames.html(html);
+  // Unirse a sala
+  joinRoomForm.submit((e) => {
+    e.preventDefault();
+    socket.emit("unirse sala", joinRoomName.val(), (response) => {
+      if (response.success) {
+        $("#container-wrap").show();
+        $("#room-wrap").hide();
+      } else {
+        roomError.html(`<div class="alert-danger">${response.message}</div>`);
+      }
+      joinRoomName.val("");
+    });
+  });
+
+  // Salir de sala
+  leaveRoomBtn.click(() => {
+    socket.emit("salir sala");
+    $("#container-wrap").hide();
+    $("#room-wrap").show();
+  });
+
+  // Recibir mensajes
+  socket.on("nuevo mensaje", (datos) => {
+    chat.append(`<div><strong>${datos.username}:</strong> ${datos.msg}</div>`);
+  });
+
+  // Actualizar lista de usuarios
+  socket.on("actualizar usuarios", (nicks) => {
+    userNames.html(nicks.map((nick) => `<div>${nick}</div>`).join(""));
+  });
+
+  // Contador de usuarios
+  socket.on("user count", (count) => {
+    $("#user-count").text(count);
   });
 });
