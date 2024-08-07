@@ -24,6 +24,11 @@ $(function () {
   const leaveRoomBtn = $("#leave-room-btn");
   const userNames = $("#usernames");
 
+  // Función para hacer scroll automático
+  const scrollToBottom = () => {
+    chat.scrollTop(chat[0].scrollHeight);
+  };
+
   // Enviar mensaje
   messageForm.submit((e) => {
     e.preventDefault();
@@ -70,6 +75,7 @@ $(function () {
       if (response.success) {
         $("#container-wrap").show();
         $("#room-wrap").hide();
+        scrollToBottom(); // Scroll cuando se une a la sala
       } else {
         roomError.html(`<div class="alert-danger">${response.message}</div>`);
       }
@@ -88,6 +94,7 @@ $(function () {
   // Recibir mensajes
   socket.on("nuevo mensaje", (datos) => {
     chat.append(`<div><strong>${datos.username}:</strong> ${datos.msg}</div>`);
+    scrollToBottom(); // Scroll cuando llega un nuevo mensaje
   });
 
   // Actualizar lista de usuarios

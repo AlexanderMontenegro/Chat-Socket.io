@@ -36,3 +36,9 @@ padding-left: 10px;
     align-items: baseline;
 }
 
+
+  #chat {
+    height: 400px;
+    overflow-y: scroll;
+  }
+  
