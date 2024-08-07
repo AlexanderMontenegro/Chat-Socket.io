@@ -1,6 +1,6 @@
 module.exports = (io) => {
   let nickNames = {};
-  let rooms = {}; // Para almacenar información sobre las salas
+  let rooms = {}; 
 
   const updateUsersCount = () => {
     io.sockets.emit("user count", io.engine.clientsCount);
