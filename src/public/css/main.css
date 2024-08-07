@@ -7,8 +7,8 @@ body{
  
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, #FF9A9E 0%, #FAD0C4 25%, #FBC2EB 50%, #A18CD1 75%, #C4E0E5 100%), 
-                linear-gradient(45deg, #FFD3A5 0%, #FD6585 25%, #FCABBD 50%, #7AC5D8 75%, #FFE57F 100%);
+    background: linear-gradient(135deg, #301d1d 0%, #453a36 25%, #4d3b47 50%, #4b4162 75%, #556466 100%), 
+                linear-gradient(45deg, #76614b 0%, #772e3e 25%, #7e555e 50%, #3e6670 75%, #7a6d3c 100%);
     background-blend-mode: overlay;
     background-size: cover;
     background-position: center;
