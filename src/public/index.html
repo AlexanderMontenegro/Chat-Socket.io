@@ -35,33 +35,32 @@
     </div>
 
     <!--formulario de salas-->
-<div class="card col-md-4 mx-auto mt-5" id="room-wrap">
-  <div class="card-header">
-    <h4>Crear o Unirse a una Sala</h4>
-  </div>
-  <p id="room-error"></p>
-  <div class="card-body">
-    <form id="create-room-form">
-      <input type="text" id="room-name" class="form-control" placeholder="Nombre de la sala" />
-      <select id="room-type" class="form-select mt-2">
-        <option value="public">Pública</option>
-        <option value="private">Privada</option>
-      </select>
-      <input type="password" id="room-password" class="form-control mt-2" placeholder="Contraseña (opcional)" />
-      <button type="submit" class="btn btn-success mt-3" id="create-room-btn">
-        Crear Sala
-      </button>
-    </form>
-    <form id="join-room-form" class="mt-4">
-      <input type="text" id="join-room-name" class="form-control" placeholder="Nombre de la sala" />
-      <input type="password" id="join-room-password" class="form-control mt-2" placeholder="Contraseña (opcional)" />
-      <button type="submit" class="btn btn-primary mt-3" id="join-room-btn">
-        Unirse a Sala
-      </button>
-    </form>
-  </div>
-</div>
-
+    <div class="card col-md-4 mx-auto mt-5" id="room-wrap" style="display: none;">
+      <div class="card-header">
+        <h4>Crear o Unirse a una Sala</h4>
+      </div>
+      <p id="room-error"></p>
+      <div class="card-body">
+        <form id="create-room-form">
+          <input type="text" id="room-name" class="form-control" placeholder="Nombre de la sala" />
+          <select id="room-type" class="form-select mt-2">
+            <option value="public">Pública</option>
+            <option value="private">Privada</option>
+          </select>
+          <input type="password" id="room-password" class="form-control mt-2" placeholder="Contraseña (opcional)" />
+          <button type="submit" class="btn btn-success mt-3" id="create-room-btn">
+            Crear Sala
+          </button>
+        </form>
+        <form id="join-room-form" class="mt-4">
+          <input type="text" id="join-room-name" class="form-control" placeholder="Nombre de la sala" />
+          <input type="password" id="join-room-password" class="form-control mt-2" placeholder="Contraseña (opcional)" />
+          <button type="submit" class="btn btn-primary mt-3" id="join-room-btn">
+            Unirse a Sala
+          </button>
+        </form>
+      </div>
+    </div>
 
     <!--formulario Chat-->
     <div class="container" id="container-wrap" style="display:none;">
@@ -77,7 +76,6 @@
             <form id="messages-form" class="card-footer">
               <div class="input-group">
                 <input type="text" id="message" class="form-control" />
-
                 <div class="input-group-append">
                   <button class="btn btn-success" type="submit">
                     Enviar
